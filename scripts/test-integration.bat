@@ -22,9 +22,9 @@ REM if %errorlevel% neq 0 exit /b %errorlevel%
 REM call .\scripts\code.bat $%~dp0\..\extensions\emmet\test-fixtures --extensionDevelopmentPath=%~dp0\..\extensions\emmet --extensionTestsPath=%~dp0\..\extensions\emmet\out\test --disable-extensions --user-data-dir=%VSCODEUSERDATADIR% .
 REM if %errorlevel% neq 0 exit /b %errorlevel%
 
-REM :: Tests in commonJS (HTML, CSS, JSON language server tests...)
-REM call .\scripts\node-electron.bat .\node_modules\mocha\bin\_mocha .\extensions\*\server\out\test\**\*.test.js
-REM if %errorlevel% neq 0 exit /b %errorlevel%
+:: Tests in commonJS (HTML, CSS, JSON language server tests...)
+call .\scripts\node-electron.bat .\node_modules\mocha\bin\_mocha .\extensions\*\server\out\test\**\*.test.js
+if %errorlevel% neq 0 exit /b %errorlevel%
 
 if exist ".\resources\server\test\test-remote-integration.bat" (
 	call .\resources\server\test\test-remote-integration.bat
