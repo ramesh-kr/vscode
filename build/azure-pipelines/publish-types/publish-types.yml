@@ -15,6 +15,8 @@ steps:
   inputs:
     versionSpec: "1.10.1"
 
+
+
 - bash: |
     # Install build dependencies
     (cd build && yarn)
@@ -44,6 +46,15 @@ steps:
 - bash: |
     TAG_VERSION=$(git describe --tags `git rev-list --tags --max-count=1`)
     CHANNEL="G1C14HJ2F"
+
+    if [ "$TAG_VERSION" = "1.999.0" ]; then
+      TAG_MESSAGE="@here Someone just pushed 1.999.0 tag. In order to fix issue 75639, please delete it and not default to push all local tags."
+      TAG_CHANNEL="G1C2N25T8"
+      curl -X POST -H "Authorization: Bearer $(SLACK_TOKEN)" \
+      -H 'Content-type: application/json; charset=utf-8' \
+      --data '{"channel":"'"$TAG_CHANNEL"'", "link_names": true, "text":"'"$TAG_MESSAGE"'"}' \
+      https://slack.com/api/chat.postMessage
+    fi
 
     MESSAGE="DefinitelyTyped/DefinitelyTyped#vscode-types-$TAG_VERSION created. Endgame master, please open this link, examine changes and create a PR:"
     LINK="https://github.com/DefinitelyTyped/DefinitelyTyped/compare/vscode-types-$TAG_VERSION?quick_pull=1&body=Updating%20VS%20Code%20Extension%20API.%20See%20https%3A%2F%2Fgithub.com%2Fmicrosoft%2Fvscode%2Fissues%2F70175%20for%20details."
